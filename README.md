@@ -37,12 +37,12 @@ The **Market Sentiment Analyzer** is designed to give investors, analysts and re
 
 | Category       | Tools & Libraries                |
 |----------------|----------------------------------|
-| Backend        | Python, Flask , mongodb                 |
+| Backend        | Python, Flask , mangodb                 |
 | Frontend       | HTML, CSS, JS                    |
 | NLP / ML       | BERT                             |
 | Data Sources   | Twitter API, News API            |
 | Visualization  | Chart.js, Matplotlib             |
-| Others         | Pandas, Requests, JSON           |
+| Others         | Pandas, Requests,          |
 
 ---
 
