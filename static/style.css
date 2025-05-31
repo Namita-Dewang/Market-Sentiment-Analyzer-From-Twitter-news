@@ -1,5 +1,8 @@
 /* Market Sentiment Analyzer - Enhanced CSS */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
 * {
     margin: 0;
     padding: 0;
@@ -12,6 +15,7 @@ body {
     min-height: 100vh;
     color: #333;
     line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll from animations */
 }
 
 /* Enhanced background with animated gradient */
@@ -72,6 +76,7 @@ body::before {
     margin-bottom: 40px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     animation: fadeInUp 1s ease-out 0.2s both;
+    position: relative; /* For symbol suggestions */
 }
 
 .controls h3 {
@@ -94,6 +99,7 @@ body::before {
 .form-group {
     flex: 1;
     min-width: 220px;
+    position: relative; /* For symbol suggestions */
 }
 
 .form-group label {
@@ -132,7 +138,7 @@ body::before {
 /* Suggestions dropdown */
 .suggestions {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 5px); /* Position below input */
     left: 0;
     right: 0;
     background: white;
@@ -142,7 +148,33 @@ body::before {
     z-index: 1000;
     max-height: 200px;
     overflow-y: auto;
-    display: none;
+    display: none; /* Controlled by JS */
+}
+
+.suggestion-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f4f8;
+}
+
+.suggestion-item .symbol {
+    font-weight: 600;
+    color: #333;
+}
+
+.suggestion-item .name {
+    font-size: 0.9em;
+    color: #666;
+    margin-left: 10px;
 }
 
 /* Buttons */
@@ -190,6 +222,7 @@ body::before {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
 }
 
 .btn.primary {
@@ -211,6 +244,9 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: white;
+    font-weight: 500;
+    animation: fadeIn 1s ease-out 0.4s both;
 }
 
 .price-info {
@@ -220,16 +256,20 @@ body::before {
 }
 
 .current-price {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
     color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 }
 
 .price-change {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    padding: 5px 12px;
+    padding: 8px 15px;
     border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .price-change.positive {
@@ -242,12 +282,71 @@ body::before {
     color: #ef4444;
 }
 
+.price-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Popular Assets Section */
+.popular-assets-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    margin-bottom: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.popular-assets-section h3 {
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.popular-assets-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.asset-btn {
+    background: linear-gradient(135deg, #e0e7ff 0%, #c4d0ff 100%);
+    color: #4a5c9e;
+    border: 1px solid #a5b4fc;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.asset-btn:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: transparent;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+}
+
+
 /* Loading Animation */
 .loading {
     text-align: center;
     padding: 60px;
     color: white;
     animation: pulse 2s infinite;
+    display: none; /* Hidden by default */
 }
 
 .loading-content {
@@ -269,17 +368,19 @@ body::before {
 
 .progress-bar {
     width: 300px;
-    height: 4px;
+    height: 6px;
     background: rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
+    border-radius: 3px;
     overflow: hidden;
+    margin-top: 15px;
 }
 
 .progress-fill {
     height: 100%;
     background: linear-gradient(90deg, #667eea, #764ba2);
     width: 0%;
-    animation: progress 3s ease-in-out infinite;
+    animation: progress 3s ease-in-out forwards; /* Forwards to keep 100% width at end */
+    animation-iteration-count: infinite; /* Loop the animation */
 }
 
 @keyframes spin {
@@ -297,9 +398,11 @@ body::before {
     100% { width: 100%; }
 }
 
+
 /* Results Section */
 .results {
     animation: fadeInUp 0.6s ease-out;
+    display: none; /* Hidden by default */
 }
 
 /* Stats Grid */
@@ -374,9 +477,9 @@ body::before {
     font-weight: 600;
 }
 
-.positive { color: #10b981; }
-.negative { color: #ef4444; }
-.neutral { color: #6b7280; }
+.positive-text { color: #10b981; }
+.negative-text { color: #ef4444; }
+.neutral-text { color: #6b7280; }
 
 /* Charts Section */
 .charts-section {
@@ -385,7 +488,7 @@ body::before {
 
 .charts-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr; /* Single column for combined chart */
     gap: 30px;
     margin-bottom: 30px;
 }
@@ -406,7 +509,6 @@ body::before {
 
 .chart-container.main-chart {
     grid-column: 1 / -1;
-    margin-bottom: 30px;
 }
 
 .chart-container h4 {
@@ -446,7 +548,7 @@ body::before {
 
 .chart-wrapper {
     position: relative;
-    height: 350px;
+    height: 400px; /* Increased height for better visibility */
 }
 
 /* Insights Section */
@@ -458,6 +560,7 @@ body::before {
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
     margin-bottom: 40px;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: fadeInUp 0.7s ease-out 0.2s both;
 }
 
 .insights-section h3 {
@@ -470,23 +573,31 @@ body::before {
     gap: 10px;
 }
 
-.insights-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+.insights-list {
+    list-style: none;
+    padding: 0;
 }
 
-.insight-card {
+.insights-list li {
     background: #f8fafc;
-    padding: 20px;
-    border-radius: 15px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 12px;
     border-left: 4px solid #667eea;
-    transition: transform 0.3s ease;
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.5;
+    transition: transform 0.2s ease;
 }
 
-.insight-card:hover {
+.insights-list li:last-child {
+    margin-bottom: 0;
+}
+
+.insights-list li:hover {
     transform: translateX(5px);
 }
+
 
 /* Articles Section */
 .articles-section {
@@ -496,6 +607,7 @@ body::before {
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: fadeInUp 0.8s ease-out 0.3s both;
 }
 
 .articles-header {
@@ -550,6 +662,7 @@ body::before {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    cursor: pointer; /* Indicate it's clickable */
 }
 
 .article-item::before {
@@ -640,6 +753,7 @@ body::before {
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
+    overflow: auto; /* Enable scroll if content is too long */
 }
 
 .modal-content {
@@ -651,6 +765,10 @@ body::before {
     max-width: 800px;
     box-shadow: 0 25px 50px rgba(0,0,0,0.2);
     animation: modalSlideIn 0.3s ease-out;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh; /* Max height to fit viewport */
 }
 
 .modal-header {
@@ -659,14 +777,44 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1001; /* Ensure header stays on top */
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-right: 20px;
 }
 
 .modal-body {
     padding: 30px;
+    flex-grow: 1;
+    overflow-y: auto; /* Make body scrollable */
+}
+
+.modal-body p {
+    margin-bottom: 15px;
+    color: #555;
+    line-height: 1.7;
+}
+
+.modal-body a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.modal-body a:hover {
+    text-decoration: underline;
 }
 
 .close {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: bold;
     cursor: pointer;
     color: #9ca3af;
@@ -675,60 +823,6 @@ body::before {
 
 .close:hover {
     color: #ef4444;
-}
-
-/* Floating Action Button */
-.fab-container {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 1000;
-}
-
-.fab {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.fab:hover {
-    transform: scale(1.1);
-    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
-}
-
-.fab-menu {
-    position: absolute;
-    bottom: 80px;
-    right: 0;
-    display: none;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.fab-item {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: white;
-    color: #667eea;
-    border: 2px solid #667eea;
-    font-size: 1.2rem;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-}
-
-.fab-item:hover {
-    background: #667eea;
-    color: white;
-    transform: scale(1.1);
 }
 
 /* Error Styles */
@@ -741,6 +835,7 @@ body::before {
     border-left: 4px solid #ef4444;
     font-weight: 600;
     box-shadow: 0 5px 15px rgba(239, 68, 68, 0.1);
+    display: none; /* Hidden by default */
 }
 
 /* Animations */
@@ -766,6 +861,11 @@ body::before {
     }
 }
 
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 @keyframes modalSlideIn {
     from {
         opacity: 0;
@@ -779,12 +879,11 @@ body::before {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-    .charts-grid {
-        grid-template-columns: 1fr;
-    }
-    
     .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    .chart-wrapper {
+        height: 350px; /* Adjust chart height for smaller screens */
     }
 }
 
@@ -799,20 +898,32 @@ body::before {
     
     .form-row {
         flex-direction: column;
+        gap: 20px;
     }
     
     .form-group {
         min-width: auto;
     }
     
-    .controls {
+    .controls, .popular-assets-section, .stat-card, .chart-container, 
+    .insights-section, .articles-section, .modal-content {
         padding: 25px;
     }
-    
-    .chart-container {
-        padding: 25px;
+
+    .realtime-price {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
     }
-    
+
+    .current-price {
+        font-size: 1.8rem;
+    }
+
+    .price-change {
+        font-size: 1rem;
+    }
+
     .articles-header {
         flex-direction: column;
         align-items: flex-start;
@@ -822,10 +933,20 @@ body::before {
         width: 100%;
         justify-content: flex-start;
     }
-    
-    .fab-container {
-        bottom: 20px;
-        right: 20px;
+
+    .modal-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .close {
+        font-size: 1.8rem;
+    }
+
+    .modal-body {
+        padding: 25px;
+    }
+    .chart-wrapper {
+        height: 300px;
     }
 }
 
@@ -838,19 +959,15 @@ body::before {
         font-size: 2.5rem;
     }
     
-    .controls {
+    .controls, .popular-assets-section, .stat-card, .chart-container, 
+    .insights-section, .articles-section, .modal-content {
         padding: 20px;
-    }
-    
-    .chart-container {
-        padding: 20px;
-    }
-    
-    .articles-section {
-        padding: 25px;
     }
     
     .article-item {
         padding: 20px;
+    }
+    .chart-wrapper {
+        height: 250px;
     }
 }

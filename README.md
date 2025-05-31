@@ -6,7 +6,7 @@ A web application that fetches real-time **Twitter** and **News** data related t
 
 ## 🚀 Overview
 
-The **Market Sentiment Analyzer** is designed to give investors, analysts, and researchers a quick snapshot of **public sentiment** around financial assets based on recent tweets and news headlines.
+The **Market Sentiment Analyzer** is designed to give investors, analysts and researchers a quick snapshot of **public sentiment** around financial assets based on recent tweets and news headlines..
 
 ---
 
@@ -37,12 +37,12 @@ The **Market Sentiment Analyzer** is designed to give investors, analysts, and r
 
 | Category       | Tools & Libraries                |
 |----------------|----------------------------------|
-| Backend        | Python, Flask                    |
+| Backend        | Python, Flask , mangodb                 |
 | Frontend       | HTML, CSS, JS                    |
 | NLP / ML       | BERT                             |
 | Data Sources   | Twitter API, News API            |
 | Visualization  | Chart.js, Matplotlib             |
-| Others         | Pandas, Requests, JSON           |
+| Others         | Pandas, Requests,          |
 
 ---
 
