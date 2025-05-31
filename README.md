@@ -6,7 +6,7 @@ A web application that fetches real-time **Twitter** and **News** data related t
 
 ## 🚀 Overview
 
-The **Market Sentiment Analyzer** is designed to give investors, analysts and researchers a quick snapshot of **public sentiment** around financial assets based on recent tweets and news headlines.
+The **Market Sentiment Analyzer** is designed to give investors, analysts and researchers a quick snapshot of **public sentiment** around financial assets based on recent tweets and news headlines..
 
 ---
 
